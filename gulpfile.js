@@ -6,7 +6,8 @@ var concat = require('gulp-concat'),
     cssmin = require('gulp-minify-css'),
     rename = require('gulp-rename'),
     sass = require('gulp-sass'),
-    uglify = require('gulp-uglify');
+    uglify = require('gulp-uglify'),
+    jade = require('gulp-jade');
 
 // Initial task for scripts
 gulp.task('scripts', function() {
@@ -28,11 +29,21 @@ gulp.task('styles', function() {
           .pipe(gulp.dest('./dist/css/'));
 });
 
+// Task to build HTML from Jade
+gulp.task('templates', function() {
+  var APP_LOCALS = {};
+
+  return gulp.src('./src/view/**/*.jade')
+          .pipe(jade({ locals: APP_LOCALS }))
+          .pipe(gulp.dest('./dist/'));
+});
+
 // Setup a default watch task for setup script pipes
 gulp.task('watch', function() {
   gulp.watch('./src/js/*.js', ['scripts']);
   gulp.watch('./src/sass/*.scss', ['styles']);
+  gulp.watch('./src/view/*.jade', ['templates']);
 });
 
 // Run everything with the default task and then run gulp from the terminal
-gulp.task('default', ['scripts', 'styles', 'watch']);
+gulp.task('default', ['scripts', 'styles', 'templates', 'watch']);
