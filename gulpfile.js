@@ -33,7 +33,7 @@ gulp.task('styles', function() {
 gulp.task('templates', function() {
   var APP_LOCALS = {};
 
-  return gulp.src('./src/view/**/*.jade')
+  return gulp.src('./src/view/**/!(_)*.jade') // this will allow gulp to recursively check all files not beginning with an underscore
           .pipe(jade({ locals: APP_LOCALS }))
           .pipe(gulp.dest('./dist/'));
 });
